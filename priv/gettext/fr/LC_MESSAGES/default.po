@@ -1,0 +1,48 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/datex/time/time.ex:158 lib/datex/time/time.ex:171
+msgid "Just now"
+msgstr "A l'instant"
+
+#, elixir-format
+#: lib/datex/time/time.ex:172
+msgid "a minute ago"
+msgstr "il y a une minute"
+
+#, elixir-format
+#: lib/datex/time/time.ex:159
+msgid "a minute later"
+msgstr "une minute plus tard"
+
+#, elixir-format
+#: lib/datex/time/time.ex:163 lib/datex/time/time.ex:176
+msgid "an hour and"
+msgstr "une heure et"
+
+#, elixir-format
+#: lib/datex/time/time.ex:166 lib/datex/time/time.ex:179
+msgid "hours and"
+msgstr "heures et"
+
+#, elixir-format
+#: lib/datex/time/time.ex:173 lib/datex/time/time.ex:176
+msgid "minutes ago"
+msgstr "minutes avant"
+
+#, elixir-format
+#: lib/datex/time/time.ex:160 lib/datex/time/time.ex:163
+#: lib/datex/time/time.ex:166 lib/datex/time/time.ex:179
+msgid "minutes later"
+msgstr "minutes"

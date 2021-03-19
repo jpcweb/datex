@@ -1,4 +1,5 @@
 defmodule Datex.Time do
+  import Datex.Gettext
 	@moduledoc """
   Simple Time which can be used in different formats including elixir format `~T[15:45:56]`. 
 
@@ -154,28 +155,28 @@ defmodule Datex.Time do
     cond do
       diff >= 0 ->
         cond do
-          diff < 60 -> "Just now"
-          diff > 60 && diff < 120 -> "a minute later"
-          diff >= 120 && diff < 3600 -> "#{div(diff, 60)} minutes later"
+          diff < 60 -> gettext("Just now")
+          diff > 60 && diff < 120 -> gettext("a minute later")
+          diff >= 120 && diff < 3600 -> "#{div(diff, 60)} " <> gettext("minutes later")
           diff >= 3600 && diff < 7200 -> 
             min = rem(diff, 3600) |> div(60)
-            "an hour and #{min} minutes later"
+            gettext("an hour and") <> " #{min} " <> gettext("minutes later")
           diff >= 7200 ->
             min = rem(diff, 3600) |> div(60) 
-            "#{div(diff, 3600)} hours and #{min} minutes later" 
+            "#{div(diff, 3600)} " <> gettext("hours and") <> " #{min} " <> gettext("minutes later") 
         end
       diff < 0 ->
         diff = abs(diff)
         cond do
-          diff < 60 -> "Just now"
-          diff > 60 && diff < 120 -> "a minute ago"
-          diff >= 120 && diff < 3600 -> "#{div(diff, 60)} minutes ago"
+          diff < 60 -> gettext("Just now")
+          diff > 60 && diff < 120 -> gettext("a minute ago")
+          diff >= 120 && diff < 3600 -> "#{div(diff, 60)} " <> gettext("minutes ago")
           diff >= 3600 && diff < 7200 -> 
             min = rem(diff, 3600) |> div(60)
-            "an hour and #{min} minutes ago"
+            gettext("an hour and") <> " #{min} " <> gettext("minutes ago")
           diff >= 7200 -> 
             min = rem(diff, 3600) |> div(60) 
-            "#{div(diff, 3600)} hours and #{min} minutes later"  
+            "#{div(diff, 3600)} " <> gettext("hours and") <> " #{min} " <> gettext("minutes later")  
         end
     end
   end
