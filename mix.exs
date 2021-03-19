@@ -9,7 +9,8 @@ defmodule Datex.MixProject do
       start_permanent: Mix.env() == :prod,
       package: package(),
       description: description(),
-      deps: deps()
+      deps: deps(),
+      compilers: [:gettext] ++ Mix.compilers()
     ]
   end
 
@@ -42,7 +43,8 @@ defmodule Datex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.19.1", only: :dev}
+      {:ex_doc, "~> 0.19.1", only: :dev},
+      {:gettext, ">= 0.0.0"}
     ]
   end
 end

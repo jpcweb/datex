@@ -1,0 +1,47 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here as no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/datex/time/time.ex:158 lib/datex/time/time.ex:171
+msgid "Just now"
+msgstr ""
+
+#, elixir-format
+#: lib/datex/time/time.ex:172
+msgid "a minute ago"
+msgstr ""
+
+#, elixir-format
+#: lib/datex/time/time.ex:159
+msgid "a minute later"
+msgstr ""
+
+#, elixir-format
+#: lib/datex/time/time.ex:163 lib/datex/time/time.ex:176
+msgid "an hour and"
+msgstr ""
+
+#, elixir-format
+#: lib/datex/time/time.ex:166 lib/datex/time/time.ex:179
+msgid "hours and"
+msgstr ""
+
+#, elixir-format
+#: lib/datex/time/time.ex:173 lib/datex/time/time.ex:176
+msgid "minutes ago"
+msgstr ""
+
+#, elixir-format
+#: lib/datex/time/time.ex:160 lib/datex/time/time.ex:163
+#: lib/datex/time/time.ex:166 lib/datex/time/time.ex:179
+msgid "minutes later"
+msgstr ""
