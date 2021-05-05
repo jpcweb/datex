@@ -46,3 +46,72 @@ msgstr "minutes avant"
 #: lib/datex/time/time.ex:166 lib/datex/time/time.ex:179
 msgid "minutes later"
 msgstr "minutes"
+
+msgid "1 Day later"
+msgstr "1 jour après"
+
+msgid "days later"
+msgstr "jours après"
+
+msgid "1 week later"
+msgstr "1 semaine après"
+
+msgid "a week and"
+msgstr "1 semaine et"
+
+msgid "day later"
+msgstr "jour après"
+
+msgid "weeks later"
+msgstr "semaines après"
+
+msgid "a month later"
+msgstr "1 mois après"
+
+msgid "a month and 1 day later"
+msgstr "1 mois et 1 jour après"
+
+msgid "a month and"
+msgstr "un mois et"
+
+msgid "months later"
+msgstr "mois après"
+
+msgid "a year later"
+msgstr "1 an après"
+
+msgid "a year and a month later"
+msgstr "1 an et 1 mois après"
+
+msgid "a year and"
+msgstr "1 an et"
+
+msgid "years later"
+msgstr "années après"
+
+msgid "1 Day ago"
+msgstr "1 jour avant"
+
+msgid "1 week ago"
+msgstr "1 semaine avant"
+
+msgid "day ago"
+msgstr "jour avant"
+
+msgid "days ago"
+msgstr "jours avant"
+
+msgid "weeks ago"
+msgstr "semaines avant"
+
+msgid "a month ago"
+msgstr "un mois avant"
+
+msgid "a month and 1 day ago"
+msgstr "un mois et un jour avant"
+
+msgid "years ago"
+msgstr "années avant"
+
+msgid "Today"
+msgstr "Aujourd'hui"
