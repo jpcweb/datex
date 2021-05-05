@@ -1,19 +1,109 @@
 defmodule Datex.Date do
-
   alias Datex.Timezones
+  import Datex.Gettext
 
-  @months_short_name %{1 => "Jan", 2 => "Feb", 3 => "Mar", 4 => "Apr", 5 => "May", 6 => "June", 7 => "July", 8 => "Aug", 9 => "Sept", 10 => "Oct", 11 => "Nov", 12 => "Dec"}
+  @months_short_name %{
+    1 => "Jan",
+    2 => "Feb",
+    3 => "Mar",
+    4 => "Apr",
+    5 => "May",
+    6 => "June",
+    7 => "July",
+    8 => "Aug",
+    9 => "Sept",
+    10 => "Oct",
+    11 => "Nov",
+    12 => "Dec"
+  }
 
-  @months %{1 => "January", 2 => "February", 3 => "March", 4 => "April", 5 => "May", 6 => "June", 7 => "July", 8 => "August", 9 => "September", 10 => "October", 11 => "November", 12 => "December"}
+  @months %{
+    1 => "January",
+    2 => "February",
+    3 => "March",
+    4 => "April",
+    5 => "May",
+    6 => "June",
+    7 => "July",
+    8 => "August",
+    9 => "September",
+    10 => "October",
+    11 => "November",
+    12 => "December"
+  }
 
-  @months_number %{"Jan" => 1, "jan" => 1, "January" => 1, "january" => 1, "Feb" => 2, "feb" => 2, "february" => 2, "February" => 2, "Mar" => 3, "mar" => 3, "March" => 3, "march" => 3, "Apr" => 4, "apr" => 4, "april" => 4, "April" => 4, "may" => 5, "May" => 5, "June" => 6, "june" => 6, "jun" => 6, "Jun" => 6, "Jul" => 7, "jul" => 7, "july" => 7, "July" => 7, "Aug" => 8, "aug" => 8, "August" => 8, "august" => 8, "Sep" => 9, "sep" => 9, "Sept" => 9, "sept" => 9, "September" => 9, "september" => 9, "Oct" => 10, "oct" => 10, "October" => 10, "october" => 10, "Nov" => 11, "nov" => 11, "November" => 11, "november" => 11, "Dec" => 12, "dec" => 12, "December" => 12, "december" => 12}
+  @months_number %{
+    "Jan" => 1,
+    "jan" => 1,
+    "January" => 1,
+    "january" => 1,
+    "Feb" => 2,
+    "feb" => 2,
+    "february" => 2,
+    "February" => 2,
+    "Mar" => 3,
+    "mar" => 3,
+    "March" => 3,
+    "march" => 3,
+    "Apr" => 4,
+    "apr" => 4,
+    "april" => 4,
+    "April" => 4,
+    "may" => 5,
+    "May" => 5,
+    "June" => 6,
+    "june" => 6,
+    "jun" => 6,
+    "Jun" => 6,
+    "Jul" => 7,
+    "jul" => 7,
+    "july" => 7,
+    "July" => 7,
+    "Aug" => 8,
+    "aug" => 8,
+    "August" => 8,
+    "august" => 8,
+    "Sep" => 9,
+    "sep" => 9,
+    "Sept" => 9,
+    "sept" => 9,
+    "September" => 9,
+    "september" => 9,
+    "Oct" => 10,
+    "oct" => 10,
+    "October" => 10,
+    "october" => 10,
+    "Nov" => 11,
+    "nov" => 11,
+    "November" => 11,
+    "november" => 11,
+    "Dec" => 12,
+    "dec" => 12,
+    "December" => 12,
+    "december" => 12
+  }
 
-  @days %{1 => "Monday", 2 => "Tuesday", 3 => "Wednesday", 4 => "Thursday", 5 => "Friday", 6 => "Saturday", 7 => "Sunday"}
+  @days %{
+    1 => "Monday",
+    2 => "Tuesday",
+    3 => "Wednesday",
+    4 => "Thursday",
+    5 => "Friday",
+    6 => "Saturday",
+    7 => "Sunday"
+  }
 
-  @days_short_name %{1 => "Mon", 2 => "Tue", 3 => "Wed", 4 => "Thu", 5 => "Fri", 6 => "Sat", 7 => "Sun"}
+  @days_short_name %{
+    1 => "Mon",
+    2 => "Tue",
+    3 => "Wed",
+    4 => "Thu",
+    5 => "Fri",
+    6 => "Sat",
+    7 => "Sun"
+  }
 
-	
-	@moduledoc """
+  @moduledoc """
   Date provides simple date formats to work with and manipulate any date formats to either elixir or any nicer looking dates.
   """
 
@@ -48,8 +138,10 @@ defmodule Datex.Date do
     utc_date = Date.utc_today()
 
     case time_zone do
-      :utc -> utc_date |> show_date(format)
-      _ -> 
+      :utc ->
+        utc_date |> show_date(format)
+
+      _ ->
         naive_to_date(time_zone)
         |> show_date(format)
     end
@@ -70,11 +162,12 @@ defmodule Datex.Date do
 
   def tomorrow(time_zone \\ :utc, format \\ :nice_date) do
     case time_zone do
-      :utc -> 
+      :utc ->
         Date.utc_today()
         |> Date.add(1)
         |> show_date(format)
-      _ -> 
+
+      _ ->
         naive_to_date(time_zone)
         |> Date.add(1)
         |> show_date(format)
@@ -96,11 +189,12 @@ defmodule Datex.Date do
 
   def yesterday(time_zone \\ :utc, format \\ :nice_date) do
     case time_zone do
-      :utc -> 
+      :utc ->
         Date.utc_today()
         |> Date.add(-1)
         |> show_date(format)
-      _ -> 
+
+      _ ->
         naive_to_date(time_zone)
         |> Date.add(-1)
         |> show_date(format)
@@ -332,7 +426,7 @@ defmodule Datex.Date do
       [~D[2018-09-10], ~D[2018-09-11], ~D[2018-09-12], ~D[2018-09-13],
       ~D[2018-09-14], ~D[2018-09-15]]
       
-  """  
+  """
 
   def date_list(range, format \\ "elixir") do
     for date <- range do
@@ -349,7 +443,7 @@ defmodule Datex.Date do
   Valid formats are: 
 
   `DD-MM-YYYY`
-  
+
   `YYYY-MM-DD`
 
   `DD-MM-YY`
@@ -406,40 +500,38 @@ defmodule Datex.Date do
   """
 
   def format_date(date, format) do
-
     elixir_date = check_date(date)
     day = day(date)
     day_short = day_short(date)
     {dat, month, year} = {elixir_date.day, elixir_date.month, elixir_date.year}
     [_, _ | last_two] = Integer.digits(year)
-    
-    case format do
 
-      "DD-MM-YYYY" -> 
+    case format do
+      "DD-MM-YYYY" ->
         "#{dat}-#{format_month(month)}-#{year}"
 
-      "YYYY-MM-DD" -> 
+      "YYYY-MM-DD" ->
         "#{year}-#{format_month(month)}-#{dat}"
 
-      "DD-MM-YY" -> 
+      "DD-MM-YY" ->
         "#{dat}-#{format_month(month)}-#{Integer.undigits(last_two)}"
 
-      "DD/MM/YYYY" -> 
+      "DD/MM/YYYY" ->
         "#{dat}/#{format_month(month)}/#{year}"
 
-      "YYYY/MM/DD" -> 
+      "YYYY/MM/DD" ->
         "#{year}/#{format_month(month)}/#{dat}"
 
-      "DD/MM/YY" -> 
+      "DD/MM/YY" ->
         "#{dat}/#{format_month(month)}/#{Integer.undigits(last_two)}"
 
-      "DD.MM.YYYY" -> 
+      "DD.MM.YYYY" ->
         "#{dat}.#{format_month(month)}.#{year}"
 
-      "YYYY.MM.DD" -> 
+      "YYYY.MM.DD" ->
         "#{year}.#{format_month(month)}.#{dat}"
 
-      "DD.MM.YY" -> 
+      "DD.MM.YY" ->
         "#{dat}.#{format_month(month)}.#{Integer.undigits(last_two)}"
 
       "DATE MONTH_NAME_FULL YYYY" ->
@@ -469,10 +561,11 @@ defmodule Datex.Date do
       "DAY_SHORT, DATE MONTH_NAME_SHORT" ->
         "#{day_short}, #{dat} #{@months_short_name[month]}"
 
-      "elixir" -> elixir_date
+      "elixir" ->
+        elixir_date
 
-      _ -> "Unspecified Format"
-
+      _ ->
+        "Unspecified Format"
     end
   end
 
@@ -481,7 +574,7 @@ defmodule Datex.Date do
 
   It takes 2 arguments. First is a `date` and second is also a `date` defaulted to `today`. 
   It returns friendly result as `string` 
-  
+
   `compare/1` will compare the given `date` from today itself. You can even pass second argument as `date` to compare with. 
 
   ## Examples
@@ -502,82 +595,117 @@ defmodule Datex.Date do
 
   def compare(date1, date2 \\ today()) do
     diff = difference(date1, date2)
+
     cond do
-      diff >= 0 -> 
+      diff >= 0 ->
         cond do
-          diff == 0 -> "Same Day"
-          diff == 1 -> "1 Day later"
-          diff < 7 -> "#{diff} days later"
-          diff == 7 -> "1 week later"
+          diff == 0 ->
+            Datex.Time.compare(date1, date2)
+
+          diff == 1 ->
+            gettext("1 Day later")
+
+          diff < 7 ->
+            "#{diff} " <> gettext("days later")
+
+          diff == 7 ->
+            gettext("1 week later")
+
           diff > 7 && diff < 30 ->
             week = div(diff, 7)
-            days = rem(diff,  7)
+            days = rem(diff, 7)
+
             cond do
-              days == 1 && week == 1 ->  
-                "a week and #{days} day later"
+              days == 1 && week == 1 ->
+                gettext("a week and") <> " #{days} " <> gettext("day later")
+
               days > 0 and week == 1 ->
-                "a week and #{days} days later"
+                gettext("a week and") <> " #{days} " <> gettext("days later")
+
               week >= 2 ->
-                "#{week} weeks later"
+                "#{week} " <> gettext("weeks later")
             end
+
           diff > 30 && diff < 60 ->
             days = rem(diff, 30)
+
             cond do
-              days == 0 -> "a month later"
-              days == 1 -> "a month and 1 day later"
-              days > 1 -> "a month and #{days} days later"
+              days == 0 -> gettext("a month later")
+              days == 1 -> gettext("a month and 1 day later")
+              days > 1 -> gettext("a month and") <> " #{days} " <> gettext("days later")
             end
-          diff >=60 && diff < 365 ->
+
+          diff >= 60 && diff < 365 ->
             months = div(diff, 30)
-            "#{months} months later"
-          diff > 365 && diff < 730 -> 
+            "#{months} " <> gettext("months later")
+
+          diff > 365 && diff < 730 ->
             months = rem(diff, 365) |> div(30)
+
             cond do
-              months == 0 -> "a year later"
-              months == 1 -> "a year and a month later"
-              months > 1 -> "a year and #{months} months later"
+              months == 0 -> gettext("a year later")
+              months == 1 -> gettext("a year and a month later")
+              months > 1 -> gettext("a year and") <> " #{months} " <> gettext("months later")
             end
-          diff >= 730 -> 
+
+          diff >= 730 ->
             year = div(diff, 365)
-            "#{year} years later"
+            "#{year} " <> gettext("years later")
         end
+
       diff < 0 ->
         diff = abs(diff)
+
         cond do
-          diff == 1 -> "1 Day ago"
-          diff < 7 -> "#{diff} days ago"
-          diff == 7 -> "1 week ago"
+          diff == 1 ->
+            gettext("1 Day ago")
+
+          diff < 7 ->
+            "#{diff} " <> gettext("days ago")
+
+          diff == 7 ->
+            gettext("1 week ago")
+
           diff > 7 && diff < 30 ->
             week = div(diff, 7)
-            days = rem(diff,  7)
+            days = rem(diff, 7)
+
             cond do
-              days == 1 && week == 1 ->  
-                "a week and #{days} day ago"
+              days == 1 && week == 1 ->
+                gettext("a week and") <> " #{days} " <> gettext("day ago")
+
               days > 0 and week == 1 ->
-                "a week and #{days} days ago"
+                gettext("a week and") <> " #{days} " <> gettext("days ago")
+
               week >= 2 ->
-                "#{week} weeks ago"
+                "#{week} " <> gettext("weeks ago")
             end
+
           diff > 30 && diff < 60 ->
             days = rem(diff, 30)
+
             cond do
-              days == 0 -> "a month ago"
-              days == 1 -> "a month and 1 day ago"
-              days > 1 -> "a month and #{days} days ago"
+              days == 0 -> gettext("a month ago")
+              days == 1 -> gettext("a month and 1 day ago")
+              days > 1 -> gettext("a month and") <> " #{days} " <> gettext("days ago")
             end
-          diff >=60 && diff < 365 ->
+
+          diff >= 60 && diff < 365 ->
             months = div(diff, 30)
-            "#{months} months ago"
-          diff > 365 && diff < 730 -> 
+            "#{months} " <> gettext("months ago")
+
+          diff > 365 && diff < 730 ->
             months = rem(diff, 365) |> div(30)
+
             cond do
-              months == 0 -> "a year later"
-              months == 1 -> "a year and a month ago"
-              months > 1 -> "a year and #{months} months ago"
+              months == 0 -> gettext("a year later")
+              months == 1 -> gettext("a year and a month ago")
+              months > 1 -> gettext("a year and") <> " #{months} " <> gettext("months ago")
             end
-          diff >= 730 -> 
+
+          diff >= 730 ->
             year = div(diff, 365)
-            "#{year} years ago"
+            "#{year} " <> gettext("years ago")
         end
     end
   end
@@ -586,16 +714,16 @@ defmodule Datex.Date do
     cond do
       String.valid?(date) ->
         convert_to_elixir_date(date)
+
       String.valid?(date) == false && date.year >= 0 ->
         date
+
       true ->
         "Invalid Date format"
     end
   end
 
-
   defp convert_to_elixir_date(date) do
-
     cond do
       String.match?(date, ~r/-/) ->
         parse_slaced_date(date)
@@ -627,32 +755,35 @@ defmodule Datex.Date do
   end
 
   defp parse_string_date(date) do
-
     case String.trim(date) |> String.split([" ", ", ", ","]) do
       [one, two, three] ->
-
         cond do
-          parse_day(one) in 1..31 && month_number(two) && String.length(three) === 4 && parse_day(three) ->
+          parse_day(one) in 1..31 && month_number(two) && String.length(three) === 4 &&
+              parse_day(three) ->
             new_date(parse_day(three), month_number(two), parse_day(one))
 
-          parse_day(two) in 1..31 && month_number(one) && String.length(three) === 4 && parse_day(three) ->
+          parse_day(two) in 1..31 && month_number(one) && String.length(three) === 4 &&
+              parse_day(three) ->
             new_date(parse_day(three), month_number(one), parse_day(two))
 
-          parse_day(two) in 1..31 && month_number(three) && String.length(one) === 4 && parse_day(one) ->
+          parse_day(two) in 1..31 && month_number(three) && String.length(one) === 4 &&
+              parse_day(one) ->
             new_date(parse_day(one), month_number(three), parse_day(two))
 
-          parse_day(three) in 1..31 && month_number(two) && String.length(one) === 4 && parse_day(one) ->
+          parse_day(three) in 1..31 && month_number(two) && String.length(one) === 4 &&
+              parse_day(one) ->
             new_date(parse_day(one), month_number(two), parse_day(three))
 
-          true -> 
+          true ->
             "Invalid Date Format"
         end
-      _ -> "Invalid Date Format"
+
+      _ ->
+        "Invalid Date Format"
     end
   end
 
   defp parse_date(date) do
-
     case date do
       [day, month, year] when year > 0 and day in 1..31 and month in 1..12 ->
         new_date(year, month, day)
@@ -662,7 +793,7 @@ defmodule Datex.Date do
 
       [month, day, year] when year > 0 and day in 1..31 and month in 1..12 ->
         new_date(year, month, day)
-        
+
       _ ->
         "Invalid Date Format"
     end
@@ -686,7 +817,8 @@ defmodule Datex.Date do
     cond do
       number < 10 ->
         "0#{number}"
-      true -> 
+
+      true ->
         number
     end
   end
@@ -731,5 +863,4 @@ defmodule Datex.Date do
     {day, month, year} = {date.day, date.month, date.year}
     "#{day} #{month_short_name(month)}, #{year}"
   end
-
 end

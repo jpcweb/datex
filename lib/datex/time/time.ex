@@ -1,6 +1,7 @@
 defmodule Datex.Time do
   import Datex.Gettext
-	@moduledoc """
+
+  @moduledoc """
   Simple Time which can be used in different formats including elixir format `~T[15:45:56]`. 
 
   It includes different functions to compare time and provide relative time in friendly formats and 
@@ -24,10 +25,14 @@ defmodule Datex.Time do
   """
   def now(zone_name \\ :utc) do
     utc_time = Time.utc_now()
+
     case zone_name do
-      :utc -> format_hour(utc_time)
-      _ -> 
+      :utc ->
+        format_hour(utc_time)
+
+      _ ->
         seconds = Datex.Timezones.get_seconds_from_timezone(zone_name)
+
         utc_time
         |> Time.add(seconds)
         |> format_hour
@@ -40,7 +45,7 @@ defmodule Datex.Time do
   It takes 4 arguments.
   Last 2 arguments are optional  i.e `unit` and `format`. 
   To use a specific `format`, you need to apply `unit` as well.
-  
+
   Unit defaults to `:second` and format to `:hour_12`.
 
   Arguments are
@@ -72,7 +77,8 @@ defmodule Datex.Time do
 
   def add(time, added, unit \\ :second, format \\ :hour_12) do
     elixir_time = check_time(time)
-    time = 
+
+    time =
       case unit do
         :hour -> Time.add(elixir_time, added * 3600)
         :minute -> Time.add(elixir_time, added * 60)
@@ -80,6 +86,7 @@ defmodule Datex.Time do
         :millisecond -> Time.add(elixir_time, added, :millisecond)
         _ -> "Invalid Unit"
       end
+
     format_hour(time, format)
   end
 
@@ -89,7 +96,7 @@ defmodule Datex.Time do
   It takes 3 arguments.
   Last 2 arguments are optional  i.e `time2` and `format`. 
   To use a specific `format`, you need to apply `time2` as well or default it to current time in utc i.e Datex.Time.now() function.
-  
+
   Unit defaults to `:second` and time2 to `current time in utc`.
 
   Argumets are
@@ -117,10 +124,11 @@ defmodule Datex.Time do
     time1 = check_time(time1)
     time2 = check_time(time2)
     diff = Time.diff(time1, time2)
+
     case unit do
       :second -> diff
       :millisecond -> diff * 1000
-      :micro -> diff * 1000000
+      :micro -> diff * 1_000_000
       :minute -> div(diff, 60)
       :hour -> div(diff, 3600)
     end
@@ -152,31 +160,52 @@ defmodule Datex.Time do
 
   def compare(time1, time2 \\ now()) do
     diff = difference(time1, time2)
+
     cond do
       diff >= 0 ->
         cond do
-          diff < 60 -> gettext("Just now")
-          diff > 60 && diff < 120 -> gettext("a minute later")
-          diff >= 120 && diff < 3600 -> "#{div(diff, 60)} " <> gettext("minutes later")
-          diff >= 3600 && diff < 7200 -> 
+          diff < 60 ->
+            gettext("Just now")
+
+          diff > 60 && diff < 120 ->
+            gettext("a minute later")
+
+          diff >= 120 && diff < 3600 ->
+            "#{div(diff, 60)} " <> gettext("minutes later")
+
+          diff >= 3600 && diff < 7200 ->
             min = rem(diff, 3600) |> div(60)
             gettext("an hour and") <> " #{min} " <> gettext("minutes later")
+
           diff >= 7200 ->
-            min = rem(diff, 3600) |> div(60) 
-            "#{div(diff, 3600)} " <> gettext("hours and") <> " #{min} " <> gettext("minutes later") 
+            min = rem(diff, 3600) |> div(60)
+
+            "#{div(diff, 3600)} " <>
+              gettext("hours and") <> " #{min} " <> gettext("minutes later")
         end
+
       diff < 0 ->
         diff = abs(diff)
+
         cond do
-          diff < 60 -> gettext("Just now")
-          diff > 60 && diff < 120 -> gettext("a minute ago")
-          diff >= 120 && diff < 3600 -> "#{div(diff, 60)} " <> gettext("minutes ago")
-          diff >= 3600 && diff < 7200 -> 
+          diff < 60 ->
+            gettext("Just now")
+
+          diff > 60 && diff < 120 ->
+            gettext("a minute ago")
+
+          diff >= 120 && diff < 3600 ->
+            "#{div(diff, 60)} " <> gettext("minutes ago")
+
+          diff >= 3600 && diff < 7200 ->
             min = rem(diff, 3600) |> div(60)
             gettext("an hour and") <> " #{min} " <> gettext("minutes ago")
-          diff >= 7200 -> 
-            min = rem(diff, 3600) |> div(60) 
-            "#{div(diff, 3600)} " <> gettext("hours and") <> " #{min} " <> gettext("minutes later")  
+
+          diff >= 7200 ->
+            min = rem(diff, 3600) |> div(60)
+
+            "#{div(diff, 3600)} " <>
+              gettext("hours and") <> " #{min} " <> gettext("minutes later")
         end
     end
   end
@@ -210,7 +239,9 @@ defmodule Datex.Time do
 
   def format_time(time, format) do
     elixir_time = check_time(time)
-    {hrs, min, sec, micro} = {elixir_time.hour, elixir_time.minute, elixir_time.second, elixir_time.microsecond}
+
+    {hrs, min, sec, micro} =
+      {elixir_time.hour, elixir_time.minute, elixir_time.second, elixir_time.microsecond}
 
     case format do
       "HH:MM" -> "#{left_pad(hrs)}:#{left_pad(min)}"
@@ -220,57 +251,65 @@ defmodule Datex.Time do
       "elixir" -> elixir_time
       _ -> "Invalid Time Format"
     end
-
   end
 
   defp convert_to_elixir_time(time) do
     cond do
-
       String.match?(time, ~r/AM/i) ->
-
         [hrs | rest] = get_time_array(time)
-        hours = 
+
+        hours =
           cond do
             hrs == 12 -> 00
             true -> hrs
           end
+
         parse_time([hours | rest])
 
       String.match?(time, ~r/PM/i) ->
         [hrs | rest] = get_time_array(time)
-        hours = 
+
+        hours =
           cond do
             hrs == 12 -> hrs
             true -> hrs + 12
           end
+
         parse_time([hours | rest])
 
       true ->
-        list = String.trim(time) |> String.split([":", ": ", " : ", " "]) |> Enum.map(&String.to_integer/1)
+        list =
+          String.trim(time)
+          |> String.split([":", ": ", " : ", " "])
+          |> Enum.map(&String.to_integer/1)
+
         cond do
           Enum.count(list) > 1 -> parse_time(list)
           true -> "Invalid Time Format"
         end
-        
     end
   end
 
   defp format_hour(time, format \\ :hour_12) do
     {hrs, min, sec} = {time.hour, time.minute, time.second}
+
     case format do
-      :hour_12 -> 
+      :hour_12 ->
         cond do
           hrs == 0 -> "12:#{left_pad(min)} AM"
           hrs == 12 -> "12:#{left_pad(min)} PM"
           hrs > 12 -> "#{left_pad(hrs - 12)}:#{left_pad(min)} PM"
           true -> "#{left_pad(hrs)}:#{left_pad(min)} AM"
         end
+
       :hour_24 ->
         "#{left_pad(hrs)}:#{left_pad(min)}:#{left_pad(sec)}"
 
-      :elixir -> time
+      :elixir ->
+        time
 
-      _ -> "Invalid time format"
+      _ ->
+        "Invalid time format"
     end
   end
 
@@ -279,9 +318,9 @@ defmodule Datex.Time do
       String.valid?(time) == false && time.hour >= 0 ->
         time
 
-      String.valid?(time) && String.match?(time, ~r/:/) || String.match?(time, ~r/ /) ->
+      (String.valid?(time) && String.match?(time, ~r/:/)) || String.match?(time, ~r/ /) ->
         convert_to_elixir_time(time)
-      
+
       true ->
         "Invalid Time format"
     end
@@ -289,11 +328,17 @@ defmodule Datex.Time do
 
   defp parse_time(time) do
     case time do
-      [hrs, min, sec, micro] when hrs in 0..23 and min in 0..60 and sec in 0..60 -> new_time(hrs, min, sec, micro)
-      [hrs, min, sec] when hrs in 0..23 and min in 0..60 and sec in 0..60 -> new_time(hrs, min, sec)
-      [hrs, min] when hrs in 0..23 and min in 0..60 -> new_time(hrs, min)
-      [hrs] when hrs in 0..23 -> new_time(hrs)
+      [hrs, min, sec, micro] when hrs in 0..23 and min in 0..60 and sec in 0..60 ->
+        new_time(hrs, min, sec, micro)
 
+      [hrs, min, sec] when hrs in 0..23 and min in 0..60 and sec in 0..60 ->
+        new_time(hrs, min, sec)
+
+      [hrs, min] when hrs in 0..23 and min in 0..60 ->
+        new_time(hrs, min)
+
+      [hrs] when hrs in 0..23 ->
+        new_time(hrs)
     end
   end
 
@@ -305,7 +350,7 @@ defmodule Datex.Time do
   defp get_time_array(time) do
     time_array = String.trim(time) |> String.split([":", ": ", " : ", " "])
     last = List.last(time_array)
-    time_array -- [last] |> Enum.map(&String.to_integer/1)
+    (time_array -- [last]) |> Enum.map(&String.to_integer/1)
   end
 
   defp left_pad(number) do
@@ -314,5 +359,4 @@ defmodule Datex.Time do
       true -> number
     end
   end
-	
 end
